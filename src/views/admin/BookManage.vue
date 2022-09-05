@@ -19,13 +19,12 @@
                                 <th scope="row">{{ index + 1 + (data.table.page.page - 1) * 10 }}</th>
                                 <td v-for="data in rowData.data"> {{ data }}</td>
                                 <td>
-                                    <a href="/admin/manage/book/modify">修改</a>
                                     <router-link 
-                                        :to="{ name: 'ModifyBook', query: {id: rowData.id}}"
-                                    />
+                                    :to="{ name: 'ModifyBook', params: { isbn: rowData.id }}"
+                                    >修改</router-link>
                                 </td>
                                 <td>
-                                    <a href="">删除</a>
+                                    <a href="javascript:void(0)" @click="deleteBookEvent(rowData.id)">删除</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -52,12 +51,13 @@ import Header from '@/components/Header.vue'
 import Table from '@/components/Table.vue'
 import BookSort from '@/components/BookSort.vue'
 import AdminIcon from '@/assets/img/admin.png'
-
+import SearchBar from '../../components/SearchBar.vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ref, onBeforeMount, watch } from 'vue'
 import axios from 'axios'
-import SearchBar from '../../components/SearchBar.vue'
 
-
+const route = useRoute()
+const router = useRouter()
 // 页面标题
 const title = '图书管理'
 
@@ -104,7 +104,7 @@ const data = ref({
         },
     },
     bookSort: [
-        [{ id: 1, name: '小说' }, { id: 2, name: '历史' }, { id: 3, name: '科技' }],
+        [{ id: 1, name: '小说' }, { id: 2, name: '历史' }, { id: 3, name: '政治' }],
         [{ id: 4, name: '哲学' }, { id: 5, name: '经济' }, { id: 6, name: '工程技术' }],
         [{ id: 7, name: '心理' }, { id: 8, name: '互联网' }, { id: 9, name: '自然科学' }],
     ],
@@ -242,6 +242,25 @@ const sortEvent = (typeId) => {
     req.value.type.params = { by: 1, typeid: typeId }
     data.value.table.page.url = req.value.type.url
     data.value.table.page.params = req.value.type.params
+}
+
+// 删除书籍点击事件
+const deleteBookEvent = (isbn) => {
+    let delFlag = confirm('确认删除?')
+    if (!delFlag)
+        return
+    let url = `/api/admin/manager/book/delete?isbn=${isbn}`
+    axios.get(url)
+        .then(res => {
+            console.log(res.data)
+            if (res.data.code === 1) {
+                alert('删除成功')
+                tableMethod.updatePage()
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
 }
 
 watch(data.value.table.page, (newVal, val) => {

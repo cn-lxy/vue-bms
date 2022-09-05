@@ -12,46 +12,46 @@
                         <input type="number" name="id" value="" hidden>
                         <div class="form-item">
                             <label for="isbn">ISBN</label>
-                            <input type="text" id="isbn" name="isbn" maxlength="20" v-model="data.formData.isbn">
+                            <input type="text" id="isbn" name="isbn" maxlength="20" v-model="data.book.isbn" disabled class="input-item">
                         </div>
                         <div class="form-item">
                             <label for="bookName">书名</label>
                             <input type="text" id="bookName" name="bookName" maxlength="20"
-                                v-model="data.formData.name">
+                                v-model="data.book.name" class="input-item">
                         </div>
                         <div class="form-item">
                             <label for="author">作者</label>
-                            <input type="text" id="author" name="author" maxlength="20" v-model="data.formData.author">
+                            <input type="text" id="author" name="author" maxlength="20" v-model="data.book.author" class="input-item">
                         </div>
                         <div class="form-item">
                             <label for="typeID">书籍类型</label>
-                            <select class="form-select form-select-sm" id="typeID" name="typeID"
-                                v-model="data.formData.typeName">
+                            <select class="form-select form-select-sm input-item" id="typeID" name="typeID" style="display:inline-block;"
+                                v-model="data.book.typeName">
                                 <option v-for="type in data.bookType">
                                     {{ type.name }}
                                 </option>
+                                {{ data.bookType[0].name }}
                             </select>
                         </div>
                         <div class="form-item">
                             <label for="press">出版社</label>
-                            <input type="text" id="press" name="press" v-model="data.formData.public">
+                            <input type="text" id="press" name="press" v-model="data.book.public" class="input-item">
                         </div>
                         <div class="form-item">
                             <label for="pressDate">出版时间</label>
-                            <el-date-picker v-model="data.formData.publicDate" value-format="YYYY-MM" type="month"
-                                placeholder="Pick a month" />
+                            <el-date-picker v-model="data.book.publicDate" value-format="YYYY-MM" type="month"
+                                placeholder="Pick a month" class="input-item"/>
                         </div>
                         <div class="form-item">
                             <label for="stock">库存</label>
-                            <input type="number" id="stock" name="stock" min="0" v-model="data.formData.stock">
+                            <input type="number" id="stock" name="stock" min="0" v-model="data.book.stock" class="input-item">
                         </div>
                         <div class="form-item">
                             <div class="send-btn">
-                                <input type="button" value="提交" @click="addBookEvent">
-                                <input type="reset" value="重置">
+                                <input type="button" value="提交" @click="modifyEvent">
+                                <input type="button" value="重置" @click="resetEvent">
                             </div>
                         </div>
-
                     </form>
                 </div>
             </div>
@@ -66,9 +66,11 @@ import Footer from '@/components/Footer.vue'
 import { ref, onBeforeMount, onMounted } from 'vue'
 import AdminIcon from '@/assets/img/modify.png'
 import { useRouter, useRoute } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 const route = useRoute()
+
 const title = '修改图书'
 const data = ref({
     header: {
@@ -77,7 +79,7 @@ const data = ref({
     bookType: [
         { id: 1, name: '小说' },
         { id: 2, name: '历史' },
-        { id: 3, name: '科技' },
+        { id: 3, name: '政治' },
         { id: 4, name: '哲学' },
         { id: 5, name: '经济' },
         { id: 6, name: '工程技术' },
@@ -86,7 +88,7 @@ const data = ref({
         { id: 9, name: '自然科学' },
     ],
     typeSelect: '',
-    formData: {
+    book: {
         isbn: '',
         name: '',
         author: '',
@@ -94,17 +96,90 @@ const data = ref({
         public: '',
         publicDate: '',
         stock: 0
-    }
+    },
 })
+
+const requestBook = async (isbn) => {
+    let url = '/api/admin/manager/book/search'
+    let params = {
+        by: 0,
+        value: isbn
+    }
+    let book = {}
+    await axios.get(url, { params: params }, { header: { 'ContentType': 'application/json' } })
+        .then(res => {
+            book = res.data.books[0]
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    return book
+}
+
+const parseReq = (book) => {
+    data.value.book.isbn = book.isbn
+    data.value.book.name = book.name
+    data.value.book.author = book.author
+
+    data.value.bookType.forEach(value => {
+        if (value.id === book.type_id) {
+            data.value.book.typeName = value.name
+            return
+        }
+    })
+
+    data.value.book.public = book.public
+    data.value.book.public = book.public
+    data.value.book.publicDate = book.public_date
+    data.value.book.stock = book.stock
+}
+
+const initBook = (isbn) => {
+    let book = requestBook(isbn)
+    book.then(_b => {
+        parseReq(_b)
+    })
+}
+
+const modifyEvent = () => {
+    let url = '/api/admin/manager/book/update'
+    let book = data.value.book
+    let params = {
+        isbn: book.isbn,
+        name: book.name,
+        type_id: -1,
+        author: book.author,
+        public: book.public,
+        public_date: book.publicDate,
+        stock: book.stock,
+    }
+    data.value.bookType.forEach(value => {
+        if (value.name === book.typeName) {
+            params.type_id = value.id
+            return
+        }
+    })
+    axios.post(url, params, { headers: { 'ContentType': 'application/json' } })
+        .then(res => {
+            console.log(res.data)
+            if (res.data.code === 1)
+                alert('更新成功')
+            else 
+                alert('更新失败!')
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+const resetEvent = () => {
+    initBook(route.params.isbn)
+}
 
 onBeforeMount(() => {
     document.getElementsByTagName('title')[0].innerText = title
     document.getElementsByTagName('link')[0].href = AdminIcon
-})
-
-onMounted(() => {
-    console.log(router.currentRoute.value.query.id)
-    console.log (route.query)
+    initBook(route.params.isbn)
 })
 </script>
 
@@ -221,6 +296,10 @@ onMounted(() => {
 }
 
 label {
-    margin-right: 20px;
+    margin-right: 40px;
+}
+
+.input-item {
+    width: 60%  !important;
 }
 </style>

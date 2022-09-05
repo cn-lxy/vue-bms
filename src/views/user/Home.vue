@@ -94,7 +94,7 @@ const data = ref({
     },
     // BookSort 组件数据
     bookSort: [
-        [{ id: 1, name: '小说' }, { id: 2, name: '历史' }, { id: 3, name: '科技' }],
+        [{ id: 1, name: '小说' }, { id: 2, name: '历史' }, { id: 3, name: '政治' }],
         [{ id: 4, name: '哲学' }, { id: 5, name: '经济' }, { id: 6, name: '工程技术' }],
         [{ id: 7, name: '心理' }, { id: 8, name: '互联网' }, { id: 9, name: '自然科学' }],
     ],
