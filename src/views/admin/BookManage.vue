@@ -3,8 +3,8 @@
     <div class="main-container">
         <div class="row">
             <div class="col item-1">
-                <div class="card"><a href="../borrow/index.jsp?id=${admin.getId()}">借阅管理</a></div>
-                <div class="card"><a href="../user/index.jsp?id=${admin.getId()}">用户管理</a></div>
+                <div class="card"><a href="/admin/manage/borrow">借阅管理</a></div>
+                <div class="card"><a href="/admin/manage/user">用户管理</a></div>
             </div>
             <div class="col item-2">
                 <div class="card">
@@ -18,14 +18,9 @@
                             <tr v-for="(rowData, index) in data.table.rowData" :key="index">
                                 <th scope="row">{{ index + 1 + (data.table.page.page - 1) * 10 }}</th>
                                 <td v-for="data in rowData.data"> {{ data }}</td>
-                                <td>
-                                    <router-link 
-                                    :to="{ name: 'ModifyBook', params: { isbn: rowData.id }}"
-                                    >修改</router-link>
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0)" @click="deleteBookEvent(rowData.id)">删除</a>
-                                </td>
+                                <!--<td><router-link :to="{ name: 'ModifyBook', params: { isbn: rowData.id }}">修改</router-link></td>-->
+                                <td><a href="javascript:void(0);" @click="modifyBookEvent(rowData.id)">修改</a></td>
+                                <td><a href="javascript:void(0)" @click="deleteBookEvent(rowData.id)">删除</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -36,12 +31,69 @@
                 </div>
             </div>
             <div class="col item-3">
-                <div class="card"><a href="/admin/manage/book/add">添加图书</a></div>
-                <SearchBar @dataTransfer="dataTransfer"/>
+                <!-- <div class="card"><a href="/admin/manage/book/add">添加图书</a></div> -->
+                <div class="card"><a href="javascript:void(0)" @click="addBookEvent">添加图书</a></div>
+                <SearchBar @dataTransfer="dataTransfer" />
                 <BookSort :types="data.bookSort" @sortEvent="sortEvent" />
             </div>
         </div>
     </div>
+    <Dialog v-model="dialogVisible">
+        <div class="add-book">
+            <div class="modify-title">
+                <span class="title-icon"></span>
+                <span class="title-text">添加图书</span>
+            </div>
+            <form autocomplete="off" method="post" action="">
+                <div class="form-item">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" id="isbn" name="isbn" maxlength="20" v-model="dialogData.form.isbn"
+                        class="input-item">
+                </div>
+                <div class="form-item">
+                    <label for="bookName">书名</label>
+                    <input type="text" id="bookName" name="bookName" maxlength="20" class="input-item"
+                        v-model="dialogData.form.name">
+                </div>
+                <div class="form-item">
+                    <label for="author">作者</label>
+                    <input type="text" id="author" name="author" maxlength="20" class="input-item"
+                        v-model="dialogData.form.author">
+                </div>
+                <div class="form-item">
+                    <label for="typeID">书籍类型</label>
+                    <select class="form-select form-select-sm input-item" id="typeID" name="typeID"
+                        v-model="dialogData.form.typeName">
+                        <option v-for="type in dialogData.bookType">
+                            {{ type.name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="press">出版社</label>
+                    <input type="text" id="press" name="press" v-model="dialogData.form.public" class="input-item">
+                </div>
+                <div class="form-item">
+                    <label for="pressDate">出版时间</label>
+                    <el-date-picker v-model="dialogData.form.publicDate" value-format="YYYY-MM" type="month"
+                        placeholder="Pick a month" class="input-item" />
+                </div>
+                <div class="form-item">
+                    <label for="stock">库存</label>
+                    <input type="number" id="stock" name="stock" min="0" v-model="dialogData.form.stock"
+                        class="input-item">
+                </div>
+                <div class="form-item">
+                    <div class="send-btn">
+                        <input type="button" value="提交" 
+                        @click="dialogSend == 'add' ? sendFormOfAddBook() : sendFormOfModifyBook()">
+                        <input type="reset" value="重置">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- <div><button class="button text-button" @click="dialogVisible = false">关闭弹窗</button></div> -->
+    </Dialog>
     <Footer />
 </template>
 
@@ -50,17 +102,17 @@ import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 import Table from '@/components/Table.vue'
 import BookSort from '@/components/BookSort.vue'
+import SearchBar from '@/components/SearchBar.vue'
+import Dialog from '@/components/Dialog.vue'
 import AdminIcon from '@/assets/img/admin.png'
-import SearchBar from '../../components/SearchBar.vue'
-import { useRoute, useRouter } from 'vue-router'
+
 import { ref, onBeforeMount, watch } from 'vue'
 import axios from 'axios'
 
-const route = useRoute()
-const router = useRouter()
 // 页面标题
 const title = '图书管理'
-
+const dialogVisible = ref(false)
+const dialogSend = ref('')  // add / modify
 const req = ref({
     search: {
         url: '/api/admin/manager/book/search',
@@ -82,6 +134,7 @@ const req = ref({
 const data = ref({
     header: {
         title: '图书管理',
+        titleLink: '/admin/manage/book',
         msg: '欢迎您!',
         name: 'admin',
     },
@@ -110,6 +163,30 @@ const data = ref({
     ],
 })
 
+const dialogData = ref({
+    bookType: [
+        { id: 1, name: '小说' },
+        { id: 2, name: '历史' },
+        { id: 3, name: '科技' },
+        { id: 4, name: '哲学' },
+        { id: 5, name: '经济' },
+        { id: 6, name: '工程技术' },
+        { id: 7, name: '心理' },
+        { id: 8, name: '互联网' },
+        { id: 9, name: '自然科学' },
+    ],
+    typeSelect: '',
+    form: {
+        isbn: '',
+        name: '',
+        author: '',
+        typeName: '',
+        public: '',
+        publicDate: '',
+        stock: Number
+    }
+})
+
 // table 方法
 const tableMethod = {
     requestBooks: async function (url, params) {
@@ -122,7 +199,6 @@ const tableMethod = {
             )
             .then(res => {
                 books = res.data.books
-                console.log(res)
             })
             .catch(err => {
                 console.log(err)
@@ -202,39 +278,14 @@ const tableMethod = {
             tableMethod.updatePage()
         }
     },
-    link: function (isbn) {
-        // 输入借阅天数
-        let days = prompt('请输入借阅天数', 10)
-        let url = data.value.table.link.url
-        let params = {
-            userId: data.value.user.id, // user id 
-            bookIsbn: isbn,             // book isbn
-            days: days * 1              // borrow days
-        }
-        axios.post(url, params)
-            .then(res => {
-                if (res.data.code === 1) {
-                    alert('借阅成功')
-                    // 借阅成功后 刷新 借阅条目&库存
-                    borrowNum.allBorrow()
-                    borrowNum.borrowing()
-                    borrowNum.borrowed()
-                    tableMethod.updatePage()
-                } else {
-                    alert('借阅失败')
-                }
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
 }
 
 // 点击搜索事件
-const dataTransfer = ({by, value}) => {
+const dataTransfer = ({ by, value }) => {
     req.value.search.params = { by: by, value: value }
     data.value.table.page.url = req.value.search.url
     data.value.table.page.params = req.value.search.params
+    tableMethod.updatePage()
 }
 
 // 书籍分类点击事件
@@ -242,6 +293,7 @@ const sortEvent = (typeId) => {
     req.value.type.params = { by: 1, typeid: typeId }
     data.value.table.page.url = req.value.type.url
     data.value.table.page.params = req.value.type.params
+    tableMethod.updatePage()
 }
 
 // 删除书籍点击事件
@@ -263,8 +315,186 @@ const deleteBookEvent = (isbn) => {
         })
 }
 
-watch(data.value.table.page, (newVal, val) => {
-    tableMethod.updatePage()
+// click: 添加书籍事件
+const addBookEvent = () => {
+    dialogSend.value = 'add'
+    dialogVisible.value = true
+}
+
+// click: 修改书籍事件
+const modifyBookEvent = (isbn) => {
+    // 根据 `isbn` 请求书籍信息
+    let url = '/api/admin/manager/book/search'
+    let params = {
+        by: 0,
+        value: isbn
+    }
+    let res = async function() {
+        let book = {}
+        await axios.get(url, { params: params }, { header: { 'ContentType': 'application/json' } })
+        .then(res => {
+            book = res.data.books[0]
+        })
+        .catch(err => {
+            console.log(err)
+            dialogVisible = false
+            return
+        })
+        return book
+    }()
+    res.then(book => {
+        // 处理 json 数据
+        let form = {
+            isbn: book.isbn,
+            name: book.name,
+            author: book.author,
+            public: book.public,
+            publicDate: book.public_date,
+            stock: book.stock,
+        }
+        dialogData.value.bookType.forEach(value => {
+            if (value.id === book.type_id) {
+                form.typeName = value.name
+                return
+            }
+        })
+        initForm(form)
+        dialogSend.value = 'modify'
+        dialogVisible.value = true
+    })
+}
+
+// dialog => 表单检查
+const checkForm = () => {
+    let formData = dialogData.value.form
+    if (formData.isbn === '' || formData.name === '' || formData.author === '' ||
+        formData.typeName === '' || formData.public === '' ||
+        formData.publicDate === '' || formData.stock === 0) {
+        return false
+    } else {
+        return true
+    }
+}
+
+// dialog => 初始化表单数据
+const initForm = (form) => {
+    dialogData.value.form = {
+        isbn: form.isbn, name: form.name, author: form.author, typeName: form.typeName,
+        public: form.public, publicDate: form.publicDate, stock: form.stock,
+    }
+}
+
+// dialog => 清除表单
+const cleanForm = () => {
+    dialogData.value.form = {
+        isbn: '', name: '', author: '', typeName: '', public: '', publicDate: '', stock: Number,
+    }
+}
+
+// dialog: 发送表单 => 添加图书
+const sendFormOfAddBook = () => {
+    // 新建图书 ["POST", "/api/admin/manager/book"]
+    let url = '/api/admin/manager/book'
+    let typeId = -1
+    switch (dialogData.value.form.typeName) {
+        case '小说':
+            typeId = 1
+            break
+        case '历史':
+            typeId = 2
+            break
+        case '科技':
+            typeId = 3
+            break
+        case '哲学':
+            typeId = 4
+            break
+        case '经济':
+            typeId = 5
+            break
+        case '工程技术':
+            typeId = 6
+            break
+        case '心理':
+            typeId = 7
+            break
+        case '互联网':
+            typeId = 8
+            break
+        case '自然科学':
+            typeId = 9
+            break
+    }
+    let params = {
+        isbn: dialogData.value.form.isbn,
+        name: dialogData.value.form.isbn,
+        type_id: typeId,
+        author: dialogData.value.form.author,
+        public: dialogData.value.form.public,
+        public_date: dialogData.value.form.publicDate,
+        stock: dialogData.value.form.stock,
+    }
+    if (!checkForm()) {
+        alert('请正确填写信息')
+        return
+    }
+    axios.post(url, params, { headers: { 'ContentType': 'application/json' } })
+        .then(res => {
+            if (res.data.code === 1) {
+                alert('添加成功')
+                dialogVisible.value = false
+                tableMethod.updatePage()
+                cleanForm()
+            }
+            else
+                alert('添加失败')
+        })
+        .catch(err => {
+            console.log(err)
+            alert('未知错误!')
+        })
+}
+
+// dialog: 发送表单 => 修改图书 
+const sendFormOfModifyBook = () => {
+    let url = '/api/admin/manager/book/update'
+    let form = dialogData.value.form
+    let params = {
+        isbn: form.isbn,
+        name: form.name,
+        type_id: -1,
+        author: form.author,
+        public: form.public,
+        public_date: form.publicDate,
+        stock: form.stock,
+    }
+    dialogData.value.bookType.forEach(value => {
+        if (value.name === form.typeName) {
+            params.type_id = value.id
+            return
+        }
+    })
+    axios.post(url, params, { headers: { 'ContentType': 'application/json' } })
+        .then(res => {
+            if (res.data.code === 1) {
+                alert('更新成功')
+                tableMethod.updatePage()
+                dialogVisible.value = false
+                cleanForm()
+            }
+            else
+                alert('更新失败!')
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+// 监听器 => 当 dialog 关闭时清除表单数据
+watch(dialogVisible, (newVal, oldVal) => {
+    if (newVal === false) {
+        cleanForm()
+    }
 })
 
 onBeforeMount(() => {
@@ -436,5 +666,69 @@ td>a:hover {
 .page-change>button:hover {
     background-color: #7d8bd0;
     color: #f2f2f2;
+}
+
+.modify-title {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 10px auto 20px;
+}
+
+.title-icon {
+    background-image: url("@/assets/img/modify.png");
+    background-size: 32px 32px;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    vertical-align: middle;
+}
+
+.title-text {
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.form-item {
+    margin: 15px 0;
+}
+
+.form-item>label {
+    width: 4em;
+}
+
+.send-btn {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.send-btn>input {
+    margin-right: 10px;
+    background-color: #13f15d;
+    /*border: 2px solid #582e86;*/
+    border: 0;
+    color: #202a29;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.send-btn>input:hover {
+    background-color: #7d8bd0;
+    /*color: #f2f2f2;*/
+    transition: 0.5s;
+}
+
+
+.form-select {
+    display: inline-block;
+    width: 64%;
+}
+
+label {
+    margin-right: 20px;
+}
+
+.input-item {
+    width: 40% !important;
 }
 </style>

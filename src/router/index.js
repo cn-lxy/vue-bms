@@ -66,6 +66,31 @@ const router = createRouter({
 			name: 'ModifyBook',
 			component: () => import('../views/admin/ModifyBook.vue')
 		},
+		{
+			path: '/admin/manage/user',
+			name: 'UserManage',
+			component: () => import('../views/admin/UserManage.vue')
+		},
+		{
+			path: '/admin/manage/user/add',
+			name: 'AddUser',
+			component: () => import('../views/admin/AddUser.vue')
+		},
+		{
+			path: '/admin/manage/user/modify',
+			name: 'ModifyUser',
+			component: () => import('../views/admin/ModifyUser.vue')
+		},
+		{
+			path: '/admin/manage/borrow',
+			name: 'BorrowManage',
+			component: () => import('../views/admin/BorrowManage.vue')
+		},
+		{
+			path: '/test',
+			name: 'Test',
+			component: () => import('../views/Test.vue')
+		},
 	]
 })
 

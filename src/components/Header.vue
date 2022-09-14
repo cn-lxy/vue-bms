@@ -2,13 +2,13 @@
     <header>
         <div class="navbar">
             <div class="navbar-container">
-                <a href="/user/home">
+                <a :href="titleLink">
                     <span class="nav-logo"></span>
                     <span class="nav-info">{{ title }}</span>
                 </a>
                 <span v-if="msg">
                     {{ msg }}
-                    <a :href="url" title="点击修改个人信息" style="color:#7d8bd0;">{{ name }}</a>
+                    <a :href="url" style="color:#7d8bd0;">{{ name }}</a>
                 </span>
             </div>
         </div>
@@ -20,7 +20,8 @@ defineProps({
     title: String,
     msg: String,
     name: String,
-    url: String
+    url: String,
+    titleLink: String,
 })
 </script>
 

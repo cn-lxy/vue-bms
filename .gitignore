@@ -26,3 +26,7 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+.gitignore
+package-lock.json
+package.json

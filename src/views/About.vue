@@ -42,7 +42,7 @@ onBeforeMount(() => {
 						</div>
 						<div>
 							<span id="bootstrap5-icon"></span>
-							<sapn>BootStrap5组件</sapn>
+							<span>BootStrap5组件</span>
 						</div>
 						<div>
 							<span id="layui-icon"></span>
@@ -59,7 +59,7 @@ onBeforeMount(() => {
 					</div>
 					<div class="introduction">
 						<p>成员: 刘琪源</p>
-						<p>主要负责用户模块的JSP页面, CSS样式和AJAX请求，和测试的编写</p>
+						<p>主要负责用户模块的JSP页面, CSS样式和AJAX请求, 和测试的编写</p>
 					</div>
 				</div>
 			</div>
@@ -70,7 +70,7 @@ onBeforeMount(() => {
 					</div>
 					<div class="introduction">
 						<p>成员: 黄志毅</p>
-						<p>主要负责管理员模块的JSP页面, CSS样式和AJAX请求，和测试的编写</p>
+						<p>主要负责管理员模块的JSP页面, CSS样式和AJAX请求, 和测试的编写</p>
 					</div>
 				</div>
 			</div>
