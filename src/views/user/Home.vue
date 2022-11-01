@@ -1,26 +1,24 @@
 <template>
-    <Header v-bind="data.header" />
-    <div class="main-container">
-        <div class="row">
-            <div class="col item-1">
-                <GuideCard :guides="data.guideCard" :uid="data.user.id" />
-            </div>
-            <div class="col item-2">
-                <!-- table -->
-                <Table 
-                    :table="data.table" 
-                    @upPage="tableMethod.upPage" 
-                    @downPage="tableMethod.downPage"
-                    @link="tableMethod.link" 
-                />
-            </div>
-            <div class="col item-3">
-                <SearchBar @dataTransfer="dataTransfer"/>
-                <BookSort :types="data.bookSort" @sortEvent="sortEvent"/>
+    <div>
+        <Header v-bind="data.header" />
+        <div class="main-container">
+            <div class="row">
+                <div class="col item-1">
+                    <GuideCard :guides="data.guideCard" :uid="data.user.id" />
+                </div>
+                <div class="col item-2">
+                    <!-- table -->
+                    <Table :table="data.table" @upPage="tableMethod.upPage" @downPage="tableMethod.downPage"
+                        @link="tableMethod.link" />
+                </div>
+                <div class="col item-3">
+                    <SearchBar @dataTransfer="dataTransfer" />
+                    <BookSort :types="data.bookSort" @sortEvent="sortEvent" />
+                </div>
             </div>
         </div>
+        <Footer />
     </div>
-    <Footer />
 </template>
 
 <script setup >
@@ -85,10 +83,10 @@ const data = ref({
             },
         ],
         link: { title: '借阅', url: '/api/user/borrow' },
-        page: { 
+        page: {
             url: req.value.type.url,
-            page: 1, 
-            pageLen: 10, 
+            page: 1,
+            pageLen: 10,
             params: req.value.type.params
         },
     },
@@ -320,7 +318,7 @@ const borrowNum = {
 }
 
 // 点击搜索事件
-const dataTransfer = ({by, value}) => {
+const dataTransfer = ({ by, value }) => {
     req.value.search.params = { by: by, value: value }
     data.value.table.page.url = req.value.search.url
     data.value.table.page.params = req.value.search.params

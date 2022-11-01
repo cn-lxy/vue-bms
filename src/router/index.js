@@ -86,17 +86,18 @@ const router = createRouter({
 			name: 'BorrowManage',
 			component: () => import('../views/admin/BorrowManage.vue')
 		},
-		{
-			path: '/test',
-			name: 'Test',
-			component: () => import('../views/Test.vue')
-		},
 	]
 })
 
 // 全局路由守卫 => 可以在这做一些权限控制
 router.beforeEach((to, from, next) => {
 	console.log('全局路由守卫')
+	console.log(`to: ${to.path}`)
+	console.log(`from: ${from.path}`)
+	if (to.path == '/') {
+		router.push('/user/home')
+		next()
+	}
 	next()
 })
 

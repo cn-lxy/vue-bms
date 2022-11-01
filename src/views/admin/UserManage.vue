@@ -1,139 +1,143 @@
 <template>
-    <Header v-bind="data.header" />
-    <div class="main-container">
-        <div class="row">
-            <div class="col item-1">
-                <div class="card"><a href="/admin/manage/borrow">借阅管理</a></div>
-                <div class="card"><a href="/admin/manage/book">图书管理</a></div>
-            </div>
-            <div class="col item-2">
-                <div class="card">
-                    <table class="table" width="60%">
-                        <thead>
-                            <tr>
-                                <th scope="col" v-for="title in data.table.title">{{ title }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(rowData, index) in data.table.rowData" :key="index">
-                                <th scope="row">{{ index + 1 + (data.table.page.page - 1) * 10 }}</th>
-                                <td v-for="data in rowData.data"> {{ data }}</td>
-                                <td><a href="javascript:void(0);" @click="modifyEvent(rowData.id)">修改</a></td>
-                                <td>
-                                    <a href="javascript:void(0)" @click="tableMethod.delUserEvent(rowData.id)">删除</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <div>
+        <Header v-bind="data.header" />
+        <div class="main-container">
+            <div class="row">
+                <div class="col item-1">
+                    <div class="card"><a href="/admin/manage/borrow">借阅管理</a></div>
+                    <div class="card"><a href="/admin/manage/book">图书管理</a></div>
                 </div>
-                <div class="page-change" v-if="data.table.rowData">
-                    <button id="upPage" @click="tableMethod.upPage">上一页</button>
-                    <button id="downPage" @click="tableMethod.downPage">下一页</button>
-                </div>
-            </div>
-            <div class="col item-3">
-                <div class="card">
-                    <a href="javascript:void(0);" @click="addUserEvent">添加用户</a>
-                </div>
-                <div class="card">
-                    <div style="margin-left: 0; margin-bottom: 5px">搜索</div>
-                    <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" placeholder="search" id="search-field"
-                            v-model.trim="data.search.key">
-                        <button class="btn btn-outline-secondary" type="button" id="search-btn"
-                            @click="searchEvent">Search</button>
+                <div class="col item-2">
+                    <div class="card">
+                        <table class="table" width="60%">
+                            <thead>
+                                <tr>
+                                    <th scope="col" v-for="title in data.table.title">{{ title }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(rowData, index) in data.table.rowData" :key="index">
+                                    <th scope="row">{{ index + 1 + (data.table.page.page - 1) * 10 }}</th>
+                                    <td v-for="data in rowData.data"> {{ data }}</td>
+                                    <td><a href="javascript:void(0);" @click="modifyEvent(rowData.id)">修改</a></td>
+                                    <td>
+                                        <a href="javascript:void(0)"
+                                            @click="tableMethod.delUserEvent(rowData.id)">删除</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="search-type">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="by-default"
-                                value="default" v-model="data.search.checked">
-                            <label class="form-check-label" for="by-sex">
-                                默认&nbsp;&nbsp;
-                            </label>
+                    <div class="page-change" v-if="data.table.rowData">
+                        <button id="upPage" @click="tableMethod.upPage">上一页</button>
+                        <button id="downPage" @click="tableMethod.downPage">下一页</button>
+                    </div>
+                </div>
+                <div class="col item-3">
+                    <div class="card">
+                        <a href="javascript:void(0);" @click="addUserEvent">添加用户</a>
+                    </div>
+                    <div class="card">
+                        <div style="margin-left: 0; margin-bottom: 5px">搜索</div>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" placeholder="search" id="search-field"
+                                v-model.trim="data.search.key">
+                            <button class="btn btn-outline-secondary" type="button" id="search-btn"
+                                @click="searchEvent">Search</button>
                         </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="by-name"
-                                value="name" v-model="data.search.checked">
-                            <label class="form-check-label" for="by-name">
-                                姓名&nbsp;&nbsp;
-                            </label>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="by-account"
-                                value="account" v-model="data.search.checked">
-                            <label class="form-check-label" for="by-account">
-                                学号&nbsp;&nbsp;
-                            </label>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="by-sex" value="sex"
-                                v-model="data.search.checked">
-                            <label class="form-check-label" for="by-sex">
-                                性别&nbsp;&nbsp;
-                            </label>
+                        <div class="search-type">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="by-default"
+                                    value="default" v-model="data.search.checked">
+                                <label class="form-check-label" for="by-sex">
+                                    默认&nbsp;&nbsp;
+                                </label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="by-name"
+                                    value="name" v-model="data.search.checked">
+                                <label class="form-check-label" for="by-name">
+                                    姓名&nbsp;&nbsp;
+                                </label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="by-account"
+                                    value="account" v-model="data.search.checked">
+                                <label class="form-check-label" for="by-account">
+                                    学号&nbsp;&nbsp;
+                                </label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="by-sex"
+                                    value="sex" v-model="data.search.checked">
+                                <label class="form-check-label" for="by-sex">
+                                    性别&nbsp;&nbsp;
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <Dialog v-model="dialogVisible">
+            <div class="add-book">
+                <div class="modify-title">
+                    <span class="title-icon"></span>
+                    <span class="title-text">添加用户</span>
+                </div>
+                <form autocomplete="off" method="post" action="">
+                    <div class="form-item">
+                        <label for="isbn">姓名</label>
+                        <input type="text" id="name" name="name" maxlength="20" v-model="dialogData.form.name"
+                            class="input-item">
+                    </div>
+                    <div class="form-item">
+                        <label for="account">账号</label>
+                        <input type="text" id="account" name="account" maxlength="20" class="input-item"
+                            v-model="dialogData.form.account">
+                    </div>
+                    <div class="form-item">
+                        <label for="password">密码</label>
+                        <input type="text" id="password" name="password" maxlength="20" class="input-item"
+                            v-model="dialogData.form.password">
+                    </div>
+                    <div class="form-item">
+                        <label for="sex">性别</label>
+                        <span class="input-item">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input sex-input" type="radio" name="sex" id="man" value="男"
+                                    v-model="dialogData.form.sex" />
+                                <label class="form-check-label" for="man">男</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input sex-input" type="radio" name="sex" id="women" value="女"
+                                    v-model="dialogData.form.sex" />
+                                <label class="form-check-label" for="women">女</label>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="form-item">
+                        <label for="college">学院</label>
+                        <input type="text" id="college" name="college" v-model="dialogData.form.college"
+                            class="input-item">
+                    </div>
+                    <div class="form-item">
+                        <label for="birthday">生日</label>
+                        <el-date-picker v-model="dialogData.form.birthday" value-format="YYYY-MM-DD" type="date"
+                            placeholder="Pick a day" class="input-item" />
+                    </div>
+                    <div class="form-item">
+                        <div class="send-btn">
+                            <input type="button" value="提交"
+                                @click="dialogSend == 'add' ? sendFormOfAddUser() : sendFormOfModifyUser()">
+                            <input type="button" value="重置" @click="dialogSend == 'add' ? addReset() : modifyReset()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </Dialog>
+        <Footer />
     </div>
-    <Dialog v-model="dialogVisible">
-        <div class="add-book">
-            <div class="modify-title">
-                <span class="title-icon"></span>
-                <span class="title-text">添加用户</span>
-            </div>
-            <form autocomplete="off" method="post" action="">
-                <div class="form-item">
-                    <label for="isbn">姓名</label>
-                    <input type="text" id="name" name="name" maxlength="20" v-model="dialogData.form.name"
-                        class="input-item">
-                </div>
-                <div class="form-item">
-                    <label for="account">账号</label>
-                    <input type="text" id="account" name="account" maxlength="20" class="input-item"
-                        v-model="dialogData.form.account">
-                </div>
-                <div class="form-item">
-                    <label for="password">密码</label>
-                    <input type="text" id="password" name="password" maxlength="20" class="input-item"
-                        v-model="dialogData.form.password">
-                </div>
-                <div class="form-item">
-                    <label for="sex">性别</label>
-                    <span class="input-item">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input sex-input" type="radio" name="sex" id="man" value="男"
-                            v-model="dialogData.form.sex"/>
-                            <label class="form-check-label" for="man">男</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input sex-input" type="radio" name="sex" id="women" value="女"
-                                v-model="dialogData.form.sex" />
-                            <label class="form-check-label" for="women">女</label>
-                        </div>
-                    </span>
-                </div>
-                <div class="form-item">
-                    <label for="college">学院</label>
-                    <input type="text" id="college" name="college" v-model="dialogData.form.college" class="input-item">
-                </div>
-                <div class="form-item">
-                    <label for="birthday">生日</label>
-                    <el-date-picker v-model="dialogData.form.birthday" value-format="YYYY-MM-DD" type="date"
-                        placeholder="Pick a day" class="input-item" />
-                </div>
-                <div class="form-item">
-                    <div class="send-btn">
-                        <input type="button" value="提交"
-                            @click="dialogSend == 'add' ? sendFormOfAddUser() : sendFormOfModifyUser()">
-                        <input type="button" value="重置" @click="dialogSend == 'add' ? addReset() : modifyReset()">
-                    </div>
-                </div>
-            </form>
-        </div>
-    </Dialog>
-    <Footer />
 </template>
 
 <script setup>

@@ -75,61 +75,65 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <Header v-bind="data.header" />
-    <div class="main-container">
-        <div class="row">
-            <div class="col">
-                <div class="card card-profile">
-                    <div class="modify-title">
-                        <span class="title-icon"></span>
-                        &nbsp;更改信息
+    <div>
+        <Header v-bind="data.header" />
+        <div class="main-container">
+            <div class="row">
+                <div class="col">
+                    <div class="card card-profile">
+                        <div class="modify-title">
+                            <span class="title-icon"></span>
+                            &nbsp;更改信息
+                        </div>
+                        <form autocomplete="off">
+                            <div class="form-item">
+                                <label for="name">姓名</label>
+                                <input type="text" id="name" name="name" maxlength="20" v-model="data.user.name">
+                            </div>
+                            <div class="form-item">
+                                <label for="account">账号</label>
+                                <input type="text" id="account" name="account" maxlength="20"
+                                    v-model="data.user.account">
+                            </div>
+                            <div class="form-item">
+                                <label for="password">密码</label>
+                                <input type="text" id="password" name="password" maxlength="20"
+                                    v-model="data.user.password">
+                            </div>
+                            <div class="form-item">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="sex" id="man" value="男"
+                                        v-model="data.user.sex">
+                                    <label class="form-check-label" for="man">男</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="sex" id="women" value="女"
+                                        v-model="data.user.sex">
+                                    <label class="form-check-label" for="women">女</label>
+                                </div>
+                            </div>
+                            <div class="form-item">
+                                <label for="college">学院</label>
+                                <input type="text" id="college" name="college" maxlength="30"
+                                    v-model="data.user.college">
+                            </div>
+                            <div class="form-item">
+                                <label for="birthday">出生日期</label>
+                                <input type="date" id="birthday" name="birthday" v-model="data.user.birthday">
+                            </div>
+                            <div class="form-item">
+                                <div class="send-btn">
+                                    <input type="button" value="提交" @click="postModify">
+                                    <input type="button" value="重置" @click="getUserInfo">
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <form autocomplete="off">
-                        <div class="form-item">
-                            <label for="name">姓名</label>
-                            <input type="text" id="name" name="name" maxlength="20" v-model="data.user.name">
-                        </div>
-                        <div class="form-item">
-                            <label for="account">账号</label>
-                            <input type="text" id="account" name="account" maxlength="20" v-model="data.user.account">
-                        </div>
-                        <div class="form-item">
-                            <label for="password">密码</label>
-                            <input type="text" id="password" name="password" maxlength="20"
-                                v-model="data.user.password">
-                        </div>
-                        <div class="form-item">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="sex" id="man" value="男"
-                                    v-model="data.user.sex">
-                                <label class="form-check-label" for="man">男</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="sex" id="women" value="女"
-                                    v-model="data.user.sex">
-                                <label class="form-check-label" for="women">女</label>
-                            </div>
-                        </div>
-                        <div class="form-item">
-                            <label for="college">学院</label>
-                            <input type="text" id="college" name="college" maxlength="30" v-model="data.user.college">
-                        </div>
-                        <div class="form-item">
-                            <label for="birthday">出生日期</label>
-                            <input type="date" id="birthday" name="birthday" v-model="data.user.birthday">
-                        </div>
-                        <div class="form-item">
-                            <div class="send-btn">
-                                <input type="button" value="提交" @click="postModify">
-                                <input type="button" value="重置" @click="getUserInfo">
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
+        <Footer />
     </div>
-    <Footer />
 </template>
 
 <style scoped>

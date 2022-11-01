@@ -1,88 +1,93 @@
 <template>
-    <Header v-bind="data.header" />
-    <div class="main-container">
-        <div class="row">
-            <div class="col item-1">
-                <div class="card"><a href="/admin/manage/book">图书管理</a></div>
-                <div class="card"><a href="/admin/manage/user">用户管理</a></div>
-            </div>
-            <div class="col item-2">
-                <div class="card">
-                    <table class="table" width="60%">
-                        <thead>
-                            <tr>
-                                <th scope="col" v-for="title in data.table.title">{{ title }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(rowData, index) in data.table.rowData" :key="index">
-                                <th scope="row">{{ index + 1 + (data.table.page.page - 1) * 10 }}</th>
-                                <td v-for="data in rowData.data"> {{ data }}</td>
-                                <td v-if="!rowData.back">
-                                    <a href="javascript:void(0)" @click="completedBorrowEvent(rowData.id)">完成借阅</a>
-                                </td>
-                                <td v-else></td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <div>
+        <Header v-bind="data.header" />
+        <div class="main-container">
+            <div class="row">
+                <div class="col item-1">
+                    <div class="card"><a href="/admin/manage/book">图书管理</a></div>
+                    <div class="card"><a href="/admin/manage/user">用户管理</a></div>
                 </div>
-                <div class="page-change" v-if="data.table.rowData">
-                    <button id="upPage" @click="tableMethod.upPage">上一页</button>
-                    <button id="downPage" @click="tableMethod.downPage">下一页</button>
-                </div>
-            </div>
-            <div class="col item-3">
-                <div class="card">
-                    <div style="margin-left: 0; margin-bottom: 5px">搜索</div>
-                    <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" placeholder="search" v-model.trim="data.search.key">
-                        <button class="btn btn-outline-secondary" type="button" @click="searchEvent">Search</button>
+                <div class="col item-2">
+                    <div class="card">
+                        <table class="table" width="60%">
+                            <thead>
+                                <tr>
+                                    <th scope="col" v-for="title in data.table.title">{{ title }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(rowData, index) in data.table.rowData" :key="index">
+                                    <th scope="row">{{ index + 1 + (data.table.page.page - 1) * 10 }}</th>
+                                    <td v-for="data in rowData.data"> {{ data }}</td>
+                                    <td v-if="!rowData.back">
+                                        <a href="javascript:void(0)" @click="completedBorrowEvent(rowData.id)">完成借阅</a>
+                                    </td>
+                                    <td v-else></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="search-type">
+                    <div class="page-change" v-if="data.table.rowData">
+                        <button id="upPage" @click="tableMethod.upPage">上一页</button>
+                        <button id="downPage" @click="tableMethod.downPage">下一页</button>
+                    </div>
+                </div>
+                <div class="col item-3">
+                    <div class="card">
+                        <div style="margin-left: 0; margin-bottom: 5px">搜索</div>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" placeholder="search" v-model.trim="data.search.key">
+                            <button class="btn btn-outline-secondary" type="button" @click="searchEvent">Search</button>
+                        </div>
+                        <div class="search-type">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="radio" name="search" id="s-default"
+                                    value="default" v-model="data.search.checked">
+                                <label class="form-check-label" for="s-default">
+                                    默认&nbsp;&nbsp;
+                                </label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="radio" name="search" id="s-uname" value="userName"
+                                    v-model="data.search.checked">
+                                <label class="form-check-label" for="s-uname">姓名&nbsp;&nbsp;</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="radio" name="search" id="s-bname" value="bookName"
+                                    v-model="data.search.checked">
+                                <label class="form-check-label" for="s-bname">书名&nbsp;&nbsp;</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div style="margin-left: 0; margin-bottom: 5px">过滤</div>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="radio" name="search" id="s-default" value="default" v-model="data.search.checked">
-                            <label class="form-check-label" for="s-default">
-                                默认&nbsp;&nbsp;
+                            <input class="form-check-input" type="radio" name="filter" id="f-all" value="all"
+                                v-model="data.filter.type">
+                            <label class="form-check-label" for="f-borrow">
+                                全部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </label>
                         </div>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="radio" name="search" id="s-uname" value="userName" v-model="data.search.checked">
-                            <label class="form-check-label" for="s-uname">姓名&nbsp;&nbsp;</label>
+                            <input class="form-check-input" type="radio" name="filter" id="f-borrow" value="borrow"
+                                v-model="data.filter.type">
+                            <label class="form-check-label" for="f-borrow">
+                                未归还&nbsp;&nbsp;
+                            </label>
                         </div>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="radio" name="search" id="s-bname" value="bookName" v-model="data.search.checked">
-                            <label class="form-check-label" for="s-bname">书名&nbsp;&nbsp;</label>
+                            <input class="form-check-input" type="radio" name="filter" id="f-back" value="back"
+                                v-model="data.filter.type">
+                            <label class="form-check-label" for="f-back">
+                                已归还&nbsp;&nbsp;
+                            </label>
                         </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div style="margin-left: 0; margin-bottom: 5px">过滤</div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="radio" name="filter" id="f-all" value="all"
-                            v-model="data.filter.type">
-                        <label class="form-check-label" for="f-borrow">
-                            全部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        </label>
-                    </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="radio" name="filter" id="f-borrow" value="borrow"
-                            v-model="data.filter.type">
-                        <label class="form-check-label" for="f-borrow">
-                            未归还&nbsp;&nbsp;
-                        </label>
-                    </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="radio" name="filter" id="f-back" value="back"
-                            v-model="data.filter.type">
-                        <label class="form-check-label" for="f-back">
-                            已归还&nbsp;&nbsp;
-                        </label>
                     </div>
                 </div>
             </div>
         </div>
+        <Footer />
     </div>
-    <Footer />
 </template>
 
 <script setup>
@@ -99,7 +104,7 @@ const title = '借阅管理'
 const req = ref({
     url: {
         userUrl: '/api/admin/manager/borrow/user',
-        bookUrl: '/api/admin/manager/borrow/book', 
+        bookUrl: '/api/admin/manager/borrow/book',
     },
     search: {
         url: '',
@@ -172,7 +177,7 @@ const tableMethod = {
     },
     parseData: function (data) {
         let tableRowData = []
-        if (data === null) 
+        if (data === null)
             return tableRowData
         data.forEach((e) => {
             tableRowData.push({
@@ -289,7 +294,7 @@ watch(data.value.filter, () => {
             break
     }
     tableMethod.updatePage()
-    
+
 }, {
     deep: true
 })

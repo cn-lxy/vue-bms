@@ -5,102 +5,104 @@ import { onBeforeMount, ref } from 'vue'
 import aboutIcon from '@/assets/img/icon/about.png'
 
 const data = ref({
-	header: {
-		title: '关于项目',
-	}
+    header: {
+        title: '关于项目',
+    }
 })
 
 onBeforeMount(() => {
-	document.getElementsByTagName('link')[0].href = aboutIcon
-	document.getElementsByTagName('title')[0].innerText = data.value.header.title
+    document.getElementsByTagName('link')[0].href = aboutIcon
+    document.getElementsByTagName('title')[0].innerText = data.value.header.title
 })
 </script>
 
 <template>
-	<Header v-bind="data.header"/>
-	<div class="main-container">
-		<div class="row about-row">
-				<div class="col first">
-					<div class="card link-1">
-						<div>
-							<span class="head-logo"></span>
-						</div>
-						<div class="introduction">
-							<p>成员: 龙新宇</p>
-							<p>主要负责项目规划, servlet, JavaBean, JSP与Servlet数据交互和数据库设计</p>
-						</div>
-					</div>
-				</div>
-				<div class="col second">
-					<div class="card link-2">
-						<div>
-							<span>其他技术</span>
-						</div>
-						<div>
-							<span id="jquery-icon"></span>
-							<span>Jquery</span>
-						</div>
-						<div>
-							<span id="bootstrap5-icon"></span>
-							<span>BootStrap5组件</span>
-						</div>
-						<div>
-							<span id="layui-icon"></span>
-							<span>layDate</span>
-						</div>
-					</div>
-				</div>
-		</div>
-		<div class="row about-row">
-			<div class="col">
-				<div class="card link-3">
-					<div>
-						<span class="head-logo-2"></span>
-					</div>
-					<div class="introduction">
-						<p>成员: 刘琪源</p>
-						<p>主要负责用户模块的JSP页面, CSS样式和AJAX请求, 和测试的编写</p>
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="card link-4">
-					<div>
-						<span class="head-logo-3"></span>
-					</div>
-					<div class="introduction">
-						<p>成员: 黄志毅</p>
-						<p>主要负责管理员模块的JSP页面, CSS样式和AJAX请求, 和测试的编写</p>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row about-row">
-			<div class="col col-idea">
-				<div class="card link-5">
-					<div>
-						<span id="idea"></span>
-					</div>
-					<div class="introduction">
-						<p>UI设计灵感</p>
-						<a href="https://chrispederick.com/">chrispederick.com</a>
-					</div>
-				</div>
-			</div>
-			<div class="col col-deployment">
-				<div class="card link-6">
-					<div>
-						<span id="deployment"></span>
-					</div>
-					<div class="introduction">
-						<p>部署于阿里云ESC</p>
-						<a href="http://www.longxinyu.xyz/">www.longxinyu.xyz</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<Footer />
+    <div>
+        <Header v-bind="data.header" />
+        <div class="main-container">
+            <div class="row about-row">
+                <div class="col first">
+                    <div class="card link-1">
+                        <div>
+                            <span class="head-logo"></span>
+                        </div>
+                        <div class="introduction">
+                            <p>成员: 龙新宇</p>
+                            <p>主要负责项目规划, servlet, JavaBean, JSP与Servlet数据交互和数据库设计</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col second">
+                    <div class="card link-2">
+                        <div>
+                            <span>其他技术</span>
+                        </div>
+                        <div>
+                            <span id="jquery-icon"></span>
+                            <span>Jquery</span>
+                        </div>
+                        <div>
+                            <span id="bootstrap5-icon"></span>
+                            <span>BootStrap5组件</span>
+                        </div>
+                        <div>
+                            <span id="layui-icon"></span>
+                            <span>layDate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row about-row">
+                <div class="col">
+                    <div class="card link-3">
+                        <div>
+                            <span class="head-logo-2"></span>
+                        </div>
+                        <div class="introduction">
+                            <p>成员: 刘琪源</p>
+                            <p>主要负责用户模块的JSP页面, CSS样式和AJAX请求, 和测试的编写</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card link-4">
+                        <div>
+                            <span class="head-logo-3"></span>
+                        </div>
+                        <div class="introduction">
+                            <p>成员: 黄志毅</p>
+                            <p>主要负责管理员模块的JSP页面, CSS样式和AJAX请求, 和测试的编写</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row about-row">
+                <div class="col col-idea">
+                    <div class="card link-5">
+                        <div>
+                            <span id="idea"></span>
+                        </div>
+                        <div class="introduction">
+                            <p>UI设计灵感</p>
+                            <a href="https://chrispederick.com/">chrispederick.com</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-deployment">
+                    <div class="card link-6">
+                        <div>
+                            <span id="deployment"></span>
+                        </div>
+                        <div class="introduction">
+                            <p>部署于阿里云ESC</p>
+                            <a href="http://www.longxinyu.xyz/">www.longxinyu.xyz</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <Footer />
+    </div>
 </template>
 
 <style scoped>
@@ -150,21 +152,25 @@ onBeforeMount(() => {
     flex-direction: column;
 }
 
-td > a {
+td>a {
     color: #7d8bd0;
 }
-td > a:hover {
+
+td>a:hover {
     color: #13f15d !important;
 }
+
 .navbar-container {
     justify-content: flex-start;
 }
+
 .card {
     justify-content: start;
     flex-direction: row;
     align-items: center;
 
 }
+
 #icon {
     display: inline-block;
     background-image: url("../assets/img/icon/about.png");
@@ -175,12 +181,14 @@ td > a:hover {
     vertical-align: middle;
     margin-right: 20px;
 }
+
 .about-row {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
 
 }
+
 .head-logo {
     display: inline-block;
     background-image: url("../assets/img/test-man.png");
@@ -190,6 +198,7 @@ td > a:hover {
     width: 64px;
     vertical-align: middle;
 }
+
 .head-logo-2 {
     display: inline-block;
     background-image: url("../assets/img/icon/image-2.png");
@@ -199,6 +208,7 @@ td > a:hover {
     width: 64px;
     vertical-align: middle;
 }
+
 .head-logo-3 {
     display: inline-block;
     background-image: url("../assets/img/icon/image-3.png");
@@ -208,12 +218,15 @@ td > a:hover {
     width: 64px;
     vertical-align: middle;
 }
+
 .introduction {
     margin-left: 20px;
 }
+
 .first {
     flex-grow: 3;
 }
+
 .second {
     flex-grow: 1;
 }
@@ -226,6 +239,7 @@ td > a:hover {
     width: 25px;
     height: 25px;
 }
+
 #bootstrap5-icon {
     display: inline-block;
     vertical-align: middle;
@@ -234,6 +248,7 @@ td > a:hover {
     width: 25px;
     height: 25px;
 }
+
 #layui-icon {
     display: inline-block;
     vertical-align: middle;
@@ -243,6 +258,7 @@ td > a:hover {
     width: 35px;
     height: 25px;
 }
+
 #idea {
     display: inline-block;
     background-image: url("../assets/img/icon/idea.png");
@@ -252,6 +268,7 @@ td > a:hover {
     width: 64px;
     vertical-align: middle;
 }
+
 #deployment {
     display: inline-block;
     background-image: url("../assets/img/icon/deployment.png");
@@ -269,57 +286,67 @@ td > a:hover {
     flex-direction: column;
     align-items: center;
 }
-.link-2 > div {
+
+.link-2>div {
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
 .col-idea {
     flex-grow: 2;
 }
+
 .col-deployment {
     flex-grow: 3;
 }
-.link-1, .link-2, .link-3, .link-4, .link-5, .link-6 {
+
+.link-1,
+.link-2,
+.link-3,
+.link-4,
+.link-5,
+.link-6 {
     border: 1px solid hsla(0, 0%, 100%, .2);
     transition: background-color, .2s;
     border-radius: 8px;
     /*background-color: #303033;*/
 }
+
 .link-1:hover {
     background: rgb(31, 187, 161) radial-gradient(circle at 200px 100px,
-    rgb(117, 214, 75) 0, rgb(117, 214, 75, 0) calc(0% + 129px))
-    no-repeat scroll 0 0 border-box;
+            rgb(117, 214, 75) 0, rgb(117, 214, 75, 0) calc(0% + 129px)) no-repeat scroll 0 0 border-box;
     color: #151320;
 }
+
 .link-2:hover {
     background: rgb(38, 234, 152) radial-gradient(circle at 50px 50px,
-    rgb(191, 194, 107) 0, rgb(117, 214, 75, 0) calc(0% + 129px)) no-repeat scroll 0 0 border-box;
+            rgb(191, 194, 107) 0, rgb(117, 214, 75, 0) calc(0% + 129px)) no-repeat scroll 0 0 border-box;
     color: #151320;
 
 }
+
 .link-3:hover {
     background: rgb(50, 141, 92) radial-gradient(circle at 100px 100px,
-    rgb(155, 86, 239) 0, rgb(117, 214, 75, 0) calc(0% + 129px))
-    no-repeat scroll 0 0 border-box;
+            rgb(155, 86, 239) 0, rgb(117, 214, 75, 0) calc(0% + 129px)) no-repeat scroll 0 0 border-box;
     color: #151320;
 
 }
+
 .link-4:hover {
     background: rgb(236, 194, 145) radial-gradient(circle at 280px 90px,
-    rgb(232, 54, 129) 0, rgb(117, 214, 75, 0) calc(0% + 129px))
-    no-repeat scroll 0 0 border-box;
+            rgb(232, 54, 129) 0, rgb(117, 214, 75, 0) calc(0% + 129px)) no-repeat scroll 0 0 border-box;
     color: #151320;
 }
+
 .link-5:hover {
     background: rgb(175, 76, 127) radial-gradient(circle at 150px 100px,
-    rgb(177, 100, 213) 0, rgb(117, 214, 75, 0) calc(0% + 129px))
-    no-repeat scroll 0 0 border-box;
+            rgb(177, 100, 213) 0, rgb(117, 214, 75, 0) calc(0% + 129px)) no-repeat scroll 0 0 border-box;
     color: #151320;
 }
+
 .link-6:hover {
     background: rgb(81, 176, 159) radial-gradient(circle at 150px 100px,
-    rgb(204, 165, 114) 0, rgb(117, 214, 75, 0) calc(0% + 129px))
-    no-repeat scroll 0 0 border-box;
+            rgb(204, 165, 114) 0, rgb(117, 214, 75, 0) calc(0% + 129px)) no-repeat scroll 0 0 border-box;
     color: #151320;
 }
 </style>

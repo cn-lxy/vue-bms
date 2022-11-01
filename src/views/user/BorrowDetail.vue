@@ -85,7 +85,7 @@ const method = {
                 break
         }
         let params = {
-            id: localStorage.getItem('uid')*1,
+            id: localStorage.getItem('uid') * 1,
             limit: data.value.table.page.pageLen,
             offset: (data.value.table.page.page - 1) * data.value.table.page.pageLen,
         }
@@ -148,16 +148,19 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <Header :title="data.title" />
-    <div class="main-container">
-        <div class="row">
-            <div class="col item-2">
-                <!-- <Table/> -->
-                <Table :table="data.table" @up-page="method.upPage" @down-page="method.downPage" @link="method.link" />
+    <div>
+        <Header :title="data.title" />
+        <div class="main-container">
+            <div class="row">
+                <div class="col item-2">
+                    <!-- <Table/> -->
+                    <Table :table="data.table" @up-page="method.upPage" @down-page="method.downPage"
+                        @link="method.link" />
+                </div>
             </div>
         </div>
+        <Footer />
     </div>
-    <Footer />
 </template>
 
 <style >

@@ -1,100 +1,102 @@
 <template>
-    <Header v-bind="data.header" />
-    <div class="main-container">
-        <div class="row">
-            <div class="col item-1">
-                <div class="card"><a href="/admin/manage/borrow">借阅管理</a></div>
-                <div class="card"><a href="/admin/manage/user">用户管理</a></div>
-            </div>
-            <div class="col item-2">
-                <div class="card">
-                    <table class="table" width="60%">
-                        <thead>
-                            <tr>
-                                <th scope="col" v-for="title in data.table.title">{{ title }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(rowData, index) in data.table.rowData" :key="index">
-                                <th scope="row">{{ index + 1 + (data.table.page.page - 1) * 10 }}</th>
-                                <td v-for="data in rowData.data"> {{ data }}</td>
-                                <!--<td><router-link :to="{ name: 'ModifyBook', params: { isbn: rowData.id }}">修改</router-link></td>-->
-                                <td><a href="javascript:void(0);" @click="modifyBookEvent(rowData.id)">修改</a></td>
-                                <td><a href="javascript:void(0)" @click="deleteBookEvent(rowData.id)">删除</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <div>
+        <Header v-bind="data.header" />
+        <div class="main-container">
+            <div class="row">
+                <div class="col item-1">
+                    <div class="card"><a href="/admin/manage/borrow">借阅管理</a></div>
+                    <div class="card"><a href="/admin/manage/user">用户管理</a></div>
                 </div>
-                <div class="page-change" v-if="data.table.rowData">
-                    <button id="upPage" @click="tableMethod.upPage">上一页</button>
-                    <button id="downPage" @click="tableMethod.downPage">下一页</button>
-                </div>
-            </div>
-            <div class="col item-3">
-                <!-- <div class="card"><a href="/admin/manage/book/add">添加图书</a></div> -->
-                <div class="card"><a href="javascript:void(0)" @click="addBookEvent">添加图书</a></div>
-                <SearchBar @dataTransfer="dataTransfer" />
-                <BookSort :types="data.bookSort" @sortEvent="sortEvent" />
-            </div>
-        </div>
-    </div>
-    <Dialog v-model="dialogVisible">
-        <div class="add-book">
-            <div class="modify-title">
-                <span class="title-icon"></span>
-                <span class="title-text">添加图书</span>
-            </div>
-            <form autocomplete="off" method="post" action="">
-                <div class="form-item">
-                    <label for="isbn">ISBN</label>
-                    <input type="text" id="isbn" name="isbn" maxlength="20" v-model="dialogData.form.isbn"
-                        class="input-item">
-                </div>
-                <div class="form-item">
-                    <label for="bookName">书名</label>
-                    <input type="text" id="bookName" name="bookName" maxlength="20" class="input-item"
-                        v-model="dialogData.form.name">
-                </div>
-                <div class="form-item">
-                    <label for="author">作者</label>
-                    <input type="text" id="author" name="author" maxlength="20" class="input-item"
-                        v-model="dialogData.form.author">
-                </div>
-                <div class="form-item">
-                    <label for="typeID">书籍类型</label>
-                    <select class="form-select form-select-sm input-item" id="typeID" name="typeID"
-                        v-model="dialogData.form.typeName">
-                        <option v-for="type in dialogData.bookType">
-                            {{ type.name }}
-                        </option>
-                    </select>
-                </div>
-                <div class="form-item">
-                    <label for="press">出版社</label>
-                    <input type="text" id="press" name="press" v-model="dialogData.form.public" class="input-item">
-                </div>
-                <div class="form-item">
-                    <label for="pressDate">出版时间</label>
-                    <el-date-picker v-model="dialogData.form.publicDate" value-format="YYYY-MM" type="month"
-                        placeholder="Pick a month" class="input-item" />
-                </div>
-                <div class="form-item">
-                    <label for="stock">库存</label>
-                    <input type="number" id="stock" name="stock" min="0" v-model="dialogData.form.stock"
-                        class="input-item">
-                </div>
-                <div class="form-item">
-                    <div class="send-btn">
-                        <input type="button" value="提交" 
-                        @click="dialogSend == 'add' ? sendFormOfAddBook() : sendFormOfModifyBook()">
-                        <input type="reset" value="重置">
+                <div class="col item-2">
+                    <div class="card">
+                        <table class="table" width="60%">
+                            <thead>
+                                <tr>
+                                    <th scope="col" v-for="title in data.table.title">{{ title }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(rowData, index) in data.table.rowData" :key="index">
+                                    <th scope="row">{{ index + 1 + (data.table.page.page - 1) * 10 }}</th>
+                                    <td v-for="data in rowData.data"> {{ data }}</td>
+                                    <!--<td><router-link :to="{ name: 'ModifyBook', params: { isbn: rowData.id }}">修改</router-link></td>-->
+                                    <td><a href="javascript:void(0);" @click="modifyBookEvent(rowData.id)">修改</a></td>
+                                    <td><a href="javascript:void(0)" @click="deleteBookEvent(rowData.id)">删除</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="page-change" v-if="data.table.rowData">
+                        <button id="upPage" @click="tableMethod.upPage">上一页</button>
+                        <button id="downPage" @click="tableMethod.downPage">下一页</button>
                     </div>
                 </div>
-            </form>
+                <div class="col item-3">
+                    <!-- <div class="card"><a href="/admin/manage/book/add">添加图书</a></div> -->
+                    <div class="card"><a href="javascript:void(0)" @click="addBookEvent">添加图书</a></div>
+                    <SearchBar @dataTransfer="dataTransfer" />
+                    <BookSort :types="data.bookSort" @sortEvent="sortEvent" />
+                </div>
+            </div>
         </div>
-        <!-- <div><button class="button text-button" @click="dialogVisible = false">关闭弹窗</button></div> -->
-    </Dialog>
-    <Footer />
+        <Dialog v-model="dialogVisible">
+            <div class="add-book">
+                <div class="modify-title">
+                    <span class="title-icon"></span>
+                    <span class="title-text">添加图书</span>
+                </div>
+                <form autocomplete="off" method="post" action="">
+                    <div class="form-item">
+                        <label for="isbn">ISBN</label>
+                        <input type="text" id="isbn" name="isbn" maxlength="20" v-model="dialogData.form.isbn"
+                            class="input-item">
+                    </div>
+                    <div class="form-item">
+                        <label for="bookName">书名</label>
+                        <input type="text" id="bookName" name="bookName" maxlength="20" class="input-item"
+                            v-model="dialogData.form.name">
+                    </div>
+                    <div class="form-item">
+                        <label for="author">作者</label>
+                        <input type="text" id="author" name="author" maxlength="20" class="input-item"
+                            v-model="dialogData.form.author">
+                    </div>
+                    <div class="form-item">
+                        <label for="typeID">书籍类型</label>
+                        <select class="form-select form-select-sm input-item" id="typeID" name="typeID"
+                            v-model="dialogData.form.typeName">
+                            <option v-for="type in dialogData.bookType">
+                                {{ type.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label for="press">出版社</label>
+                        <input type="text" id="press" name="press" v-model="dialogData.form.public" class="input-item">
+                    </div>
+                    <div class="form-item">
+                        <label for="pressDate">出版时间</label>
+                        <el-date-picker v-model="dialogData.form.publicDate" value-format="YYYY-MM" type="month"
+                            placeholder="Pick a month" class="input-item" />
+                    </div>
+                    <div class="form-item">
+                        <label for="stock">库存</label>
+                        <input type="number" id="stock" name="stock" min="0" v-model="dialogData.form.stock"
+                            class="input-item">
+                    </div>
+                    <div class="form-item">
+                        <div class="send-btn">
+                            <input type="button" value="提交"
+                                @click="dialogSend == 'add' ? sendFormOfAddBook() : sendFormOfModifyBook()">
+                            <input type="reset" value="重置">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- <div><button class="button text-button" @click="dialogVisible = false">关闭弹窗</button></div> -->
+        </Dialog>
+        <Footer />
+    </div>
 </template>
 
 <script setup>
@@ -107,12 +109,17 @@ import Dialog from '@/components/Dialog.vue'
 import AdminIcon from '@/assets/img/admin.png'
 
 import { ref, onBeforeMount, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
+
 
 // 页面标题
 const title = '图书管理'
 const dialogVisible = ref(false)
 const dialogSend = ref('')  // add / modify
+
+const router = useRouter()
+
 const req = ref({
     search: {
         url: '/api/admin/manager/book/search',
@@ -329,17 +336,17 @@ const modifyBookEvent = (isbn) => {
         by: 0,
         value: isbn
     }
-    let res = async function() {
+    let res = async function () {
         let book = {}
         await axios.get(url, { params: params }, { header: { 'ContentType': 'application/json' } })
-        .then(res => {
-            book = res.data.books[0]
-        })
-        .catch(err => {
-            console.log(err)
-            dialogVisible = false
-            return
-        })
+            .then(res => {
+                book = res.data.books[0]
+            })
+            .catch(err => {
+                console.log(err)
+                dialogVisible = false
+                return
+            })
         return book
     }()
     res.then(book => {
@@ -498,6 +505,13 @@ watch(dialogVisible, (newVal, oldVal) => {
 })
 
 onBeforeMount(() => {
+    // 登录验证
+    axios.get("/api/admin/login")
+        .then(res => {
+            if (res.data.code == -1) {
+                router.push("/admin/login")
+            }
+        })
     // 修改图标和标题
     document.getElementsByTagName('title')[0].innerText = title
     document.getElementsByTagName('link')[0].href = AdminIcon
