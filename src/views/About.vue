@@ -59,7 +59,7 @@ onBeforeMount(() => {
                             <span class="head-logo-2"></span>
                         </div>
                         <div class="introduction">
-                            <p>成员: 刘琪源</p>
+                            <p>成员: 成员2</p>
                             <p>主要负责用户模块的JSP页面, CSS样式和AJAX请求, 和测试的编写</p>
                         </div>
                     </div>
@@ -70,7 +70,7 @@ onBeforeMount(() => {
                             <span class="head-logo-3"></span>
                         </div>
                         <div class="introduction">
-                            <p>成员: 黄志毅</p>
+                            <p>成员: 成员3</p>
                             <p>主要负责管理员模块的JSP页面, CSS样式和AJAX请求, 和测试的编写</p>
                         </div>
                     </div>

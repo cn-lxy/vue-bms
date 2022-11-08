@@ -28,17 +28,26 @@
 </template>
 
 <script setup>
-import { onBeforeMount } from 'vue';
+import { onBeforeMount } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios'
 
 import AdminHomeIcon from '@/assets/img/admin.png'
 
 const title = '管理员-导航'
+const router = useRouter()
 
 onBeforeMount(() => {
+    // 登录验证
+    axios.get("/api/admin/login")
+        .then(res => {
+            if (res.data.code == -1) {
+                router.push("/admin/login")
+            }
+        })
     // 更新标题和图标
     document.getElementsByTagName('title')[0].innerText = title
     document.getElementsByTagName('link')[0].href = AdminHomeIcon
-
 })
 </script>
 

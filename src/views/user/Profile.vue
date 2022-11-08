@@ -208,7 +208,7 @@ onBeforeMount(() => {
 }
 
 .title-icon {
-    background-image: url("../assets/img/modify.png");
+    background-image: url("../../assets/img/modify.png");
     background-size: 48px 48px;
     display: inline-block;
     height: 48px;

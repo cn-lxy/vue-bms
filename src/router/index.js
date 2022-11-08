@@ -11,27 +11,27 @@ const router = createRouter({
 		{
 			path: '/user/home',
 			name: 'userHome',
-			component: () => import ('../views/user/Home.vue')
+			component: () => import('../views/user/Home.vue')
 		},
 		{
 			path: '/user/login',
 			name: 'userLogin',
-			component: () => import ('../views/user/Login.vue')
+			component: () => import('../views/user/Login.vue')
 		},
 		{
 			path: '/user/register',
 			name: 'userRegister',
-			component: () => import ('../views/user/Register.vue')
+			component: () => import('../views/user/Register.vue')
 		},
 		{
 			path: '/user/borrowDetail',
 			name: 'borrowDetail',
-			component: () => import ('../views/user/BorrowDetail.vue')
+			component: () => import('../views/user/BorrowDetail.vue')
 		},
 		{
 			path: '/user/profile',
 			name: 'userProfile',
-			component: () => import ('../views/user/Profile.vue')
+			component: () => import('../views/user/Profile.vue')
 		},
 		{
 			path: '/about',
@@ -91,12 +91,18 @@ const router = createRouter({
 
 // 全局路由守卫 => 可以在这做一些权限控制
 router.beforeEach((to, from, next) => {
-	console.log('全局路由守卫')
-	console.log(`to: ${to.path}`)
-	console.log(`from: ${from.path}`)
-	if (to.path == '/') {
-		router.push('/user/home')
-		next()
+	console.log('Global Router Navigate')
+	
+	switch (to.path) {
+		case '/':
+			router.push('/user/home')
+			break
+		case '/user':
+			router.push('/user/home')
+			break
+		case '/admin':
+			router.push('/admin/home')
+			break
 	}
 	next()
 })
