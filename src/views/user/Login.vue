@@ -1,12 +1,12 @@
-<script setup>
-import LoginCard from '@/components/LoginCard.vue'
-</script>
-
 <template>
 	<div id="container">
 		<LoginCard />
 	</div>
 </template>
+
+<script setup>
+import LoginCard from '@/components/LoginCard.vue'
+</script>
 
 <style scoped>
 @import '@/assets/css/init.css';
