@@ -5,7 +5,7 @@
                 <h2>01</h2>
                 <h3>图书管理</h3>
                 <p></p>
-                <a href="/admin/manage/book">管理</a>
+                <RouterLink to="/admin/manage/book">管理</RouterLink>
             </div>
         </div>
         <div class="card">
@@ -13,7 +13,7 @@
                 <h2>02</h2>
                 <h3>借阅管理</h3>
                 <p></p>
-                <a href="/admin/manage/borrow">管理</a>
+                <RouterLink to="/admin/manage/borrow">管理</RouterLink>
             </div>
         </div>
         <div class="card">
@@ -21,7 +21,7 @@
                 <h2>03</h2>
                 <h3>用户管理</h3>
                 <p></p>
-                <a href="/admin/manage/user">管理</a>
+                <RouterLink to="/admin/manage/user">管理</RouterLink>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
 
 <script setup>
 import { onBeforeMount } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 import AdminHomeIcon from '@/assets/img/admin.png'
@@ -51,7 +51,7 @@ onBeforeMount(() => {
 })
 </script>
 
-<style>
+<style scoped>
 * {
     margin: 0;
     padding: 0;

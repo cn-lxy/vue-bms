@@ -4,8 +4,8 @@
         <div class="main-container">
             <div class="row">
                 <div class="col item-1">
-                    <div class="card"><a href="/admin/manage/borrow">借阅管理</a></div>
-                    <div class="card"><a href="/admin/manage/book">图书管理</a></div>
+                    <div class="card"><RouterLink to="/admin/manage/borrow">借阅管理</RouterLink></div>
+                    <div class="card"><RouterLink to="/admin/manage/book">图书管理</RouterLink></div>
                 </div>
                 <div class="col item-2">
                     <div class="card">
@@ -141,12 +141,16 @@
 </template>
 
 <script setup>
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
-import UserManageIcon from '@/assets/img/user.png'
-import Dialog from '@/components/Dialog.vue'
-import { ref, onBeforeMount, watch } from 'vue'
-import axios from 'axios'
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+import UserManageIcon from '@/assets/img/user.png';
+import Dialog from '@/components/Dialog.vue';
+
+import { ref, onBeforeMount, watch } from 'vue';
+import axios from 'axios';
+import { useRoute } from 'vue-router';
+
+const route = useRoute()
 
 const title = '用户管理'
 const req = ref({
@@ -178,13 +182,15 @@ const dialogData = ref({
     },
     uid: Number,
 })
+
 // 全局数据
 const data = ref({
     header: {
         title: '图书管理',
-        titleLink: '/admin/manage/user',
+        titleLink: route.fullPath,
         msg: '欢迎您!',
         name: 'admin',
+        url: route.fullPath
     },
     table: {
         title: [
@@ -430,7 +436,7 @@ const sendFormOfModifyUser = () => {
             console.log(res.data)
             if (res.data.code === 1) {
                 alert('更新成功')
-                dialogVisible = false
+                dialogVisible.value = false
             } else
                 alert('更新失败!')
         })

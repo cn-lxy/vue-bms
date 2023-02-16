@@ -2,13 +2,13 @@
     <header>
         <div class="navbar">
             <div class="navbar-container">
-                <a :href="titleLink">
+                <RouterLink :to="titleLink">
                     <span class="nav-logo"></span>
                     <span class="nav-info">{{ title }}</span>
-                </a>
+                </RouterLink>
                 <span v-if="msg">
                     {{ msg }}
-                    <a :href="url" style="color:#7d8bd0;">{{ name }}</a>
+                    <RouterLink :to="url" style="color:#7d8bd0;">{{ name }}</RouterLink>
                 </span>
             </div>
         </div>
@@ -16,12 +16,14 @@
 </template>
 
 <script setup>
+import { RouterLink } from 'vue-router';
+
 defineProps({
     title: String,
     msg: String,
     name: String,
-    url: String,
-    titleLink: String,
+    url: { type: String, default: "/" },
+    titleLink: { type: String, default: "/" },
 })
 </script>
 

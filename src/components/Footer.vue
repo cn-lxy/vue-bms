@@ -3,10 +3,10 @@
         <div class="foot-body">
             <ul class="foot-ul">
                 <li>
-                    <a href="/about" class="foot-link">
+                    <RouterLink to="/about" class="foot-link">
                         <img alt="about" class="icon" src="@/assets/svg/about.svg" />
                         about
-                    </a>
+                    </RouterLink>
                 </li>
             </ul>
             <small class="copyright">
@@ -15,6 +15,10 @@
         </div>
     </footer>
 </template>
+
+<script setup>
+import { RouterLink } from 'vue-router';
+</script>
 
 <style scoped>
 @import '@/assets/css/init.css';

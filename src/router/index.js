@@ -86,6 +86,18 @@ const router = createRouter({
 			name: 'BorrowManage',
 			component: () => import('../views/admin/BorrowManage.vue')
 		},
+
+		// !! 下面是测试页面路由
+		{
+			path: '/test1',
+			name: 'Test1',
+			component: () => import('../views/Test1.vue')
+		},
+		{
+			path: '/test2',
+			name: 'Test2',
+			component: () => import('../views/Test2.vue')
+		}
 	]
 })
 
@@ -94,9 +106,9 @@ router.beforeEach((to, from, next) => {
 	console.log('Global Router Navigate')
 	
 	switch (to.path) {
-		case '/':
-			router.push('/user/home')
-			break
+		// case '/':
+		// 	router.push('/user/home')
+		// 	break
 		case '/user':
 			router.push('/user/home')
 			break

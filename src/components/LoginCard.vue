@@ -50,7 +50,6 @@ export default {
 				)
 				.then(response => {
 					if (response.status === 200 && response.data.code === 1) {
-						// TAG 登录成功处理
 						alert('登录成功')
 						// 数据本地化
 						localStorage.setItem('uid', response.data.id)

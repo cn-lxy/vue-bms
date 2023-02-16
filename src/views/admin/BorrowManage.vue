@@ -4,8 +4,8 @@
         <div class="main-container">
             <div class="row">
                 <div class="col item-1">
-                    <div class="card"><a href="/admin/manage/book">图书管理</a></div>
-                    <div class="card"><a href="/admin/manage/user">用户管理</a></div>
+                    <div class="card"><RouterLink to="/admin/manage/book">图书管理</RouterLink></div>
+                    <div class="card"><RouterLink to="/admin/manage/user">用户管理</RouterLink></div>
                 </div>
                 <div class="col item-2">
                     <div class="card">
@@ -95,12 +95,14 @@ import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 import Table from '@/components/Table.vue'
 import AdminIcon from '@/assets/img/admin.png'
+
 import { ref, onBeforeMount, watch } from 'vue'
 import axios from 'axios'
+import { useRoute } from 'vue-router'
 
 // 页面标题
 const title = '借阅管理'
-
+const route = useRoute()
 const req = ref({
     url: {
         userUrl: '/api/admin/manager/borrow/user',
@@ -125,9 +127,10 @@ const req = ref({
 const data = ref({
     header: {
         title: title,
-        titleLink: '/admin/manage/borrow',
+        titleLink: route.fullPath,
         msg: '欢迎您!',
         name: 'admin',
+        url: route.fullPath,
     },
     table: {
         title: [
